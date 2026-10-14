@@ -1,0 +1,782 @@
+:root {
+  --bg: #eef0f3;
+  --card-bg: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #5b6472;
+  --border: #d7dbe0;
+  --accent: #1d4ed8;      /* strong blue: white text on this passes AA */
+  --accent-soft: #e6edfb; /* light blue for selected tiles / hover, paired with dark text */
+  --accent-soft-border: #b9cdf5;
+}
+
+* { box-sizing: border-box; }
+
+/* Elements that render actual kana need a font that shapes small kana (ゃゅょっ etc.)
+   correctly — the system UI stack below has no CJK member, so browsers fall back to
+   an arbitrary CJK font that draws small kana at full size with a visible gap. */
+:root {
+  --font-kana: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic,
+    "Noto Sans JP", Meiryo, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.app {
+  position: relative; /* stack above .watermark regardless of DOM/paint order */
+  z-index: 1;
+  width: 100%;
+  max-width: 720px;
+}
+
+.watermark {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.watermark span {
+  position: absolute;
+  font-family: var(--font-kana);
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.05;
+  white-space: nowrap;
+}
+
+.main-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0 8px 0 16px;
+  flex-wrap: wrap;
+}
+
+.tabs-left {
+  display: flex;
+  gap: 4px;
+}
+
+.universal-actions {
+  display: flex;
+  gap: 14px;
+  padding: 8px 0;
+}
+
+.link-btn.muted {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.link-btn.muted:hover {
+  color: var(--accent);
+}
+
+.tabs-left button {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.tabs-left button.active {
+  color: var(--fg);
+  border-bottom-color: var(--accent);
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0 0 10px 10px;
+  padding: 24px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.badge {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.panel-head h2 {
+  margin: 0 0 4px;
+  font-size: 19px;
+}
+
+.sub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.subtab-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0 2px 0 4px;
+}
+
+.subtab-group-label:first-child {
+  margin-left: 0;
+}
+
+.link-btn.muted.active-pill {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.random-controls {
+  margin-bottom: 12px;
+}
+
+.random-controls .hint {
+  margin: 0 0 10px;
+}
+
+#random-regenerate {
+  margin-top: 4px;
+}
+
+.sub-tabs button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.sub-tabs button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 12px 0 18px;
+}
+
+.hint b { color: var(--fg); }
+
+.quick-select {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -6px 0 16px;
+}
+
+.quick-select-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.char-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 6px;
+  margin-bottom: 16px;
+}
+
+.char-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
+}
+
+.col-label {
+  appearance: none;
+  border: none;
+  background: none;
+  width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  text-transform: lowercase;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 0;
+}
+
+.col-label:hover {
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+.col-label.all-selected {
+  color: var(--accent);
+}
+
+.char-tile {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  border-radius: 6px;
+  width: 52px;
+  padding: 6px 2px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  line-height: 1.15;
+}
+
+/* Small dot on any tile not yet answered correctly this session — just a
+   lightweight way to see at a glance what's still untried. */
+.char-tile,
+.word-tile,
+.kanji-tile,
+.counting-tile {
+  position: relative;
+}
+
+.char-tile.unanswered::after,
+.word-tile.unanswered::after,
+.kanji-tile.unanswered::after,
+.counting-tile.unanswered::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.kana {
+  font-family: var(--font-kana);
+}
+
+/* Self-quiz cover: click a tile's character to blur it and show a closed-eye
+   icon; click again to reveal. Stops its own click from bubbling to the tile. */
+.peek-wrap {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.peek-wrap .peek-icon {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.peek-wrap.covered .kana {
+  filter: blur(5px);
+  user-select: none;
+}
+
+.peek-wrap.covered .peek-icon {
+  display: flex;
+}
+
+/* Larger version used on the Study card's big character, not the small tiles. */
+.peek-wrap-lg.covered .kana {
+  filter: blur(10px);
+}
+
+.peek-wrap-lg .peek-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.char-tile .kana {
+  font-size: 19px;
+  color: inherit;
+}
+
+.char-tile .romaji {
+  font-size: 9px;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.char-tile.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
+  color: var(--fg);
+}
+
+.word-tile {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  border-radius: 8px;
+  width: 92px;
+  padding: 10px 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.word-tile .word-emoji {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 2px;
+}
+
+.word-tile .word-jp {
+  font-size: 15px;
+  color: inherit;
+}
+
+.word-tile .word-romaji {
+  font-size: 10px;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.word-tile.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
+  color: var(--fg);
+}
+
+.kanji-tile,
+.counting-tile {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--muted);
+  border-radius: 8px;
+  width: 92px;
+  padding: 10px 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+/* Not scoped to .kanji-tile alone — .counting-tile reuses these same inner classes. */
+.kanji-char {
+  font-size: 28px;
+  color: inherit;
+}
+
+/* Random numbers can compose long strings (an 8-digit number is ~9 kanji) —
+   the fixed 92px tile width would wrap that one character per line. Let the
+   tile grow to fit its content on one line instead. */
+.counting-tile.wide {
+  width: auto;
+  min-width: 92px;
+  max-width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.counting-tile.wide .kanji-char {
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.counting-tile.wide .kanji-reading {
+  white-space: nowrap;
+}
+
+.kanji-meaning {
+  font-size: 11px;
+  color: inherit;
+  text-align: center;
+}
+
+.vocab-meaning {
+  font-size: 11px;
+  color: inherit;
+  text-align: center;
+  opacity: 0.85;
+}
+
+.kanji-reading {
+  font-size: 10px;
+  color: inherit;
+  opacity: 0.85;
+}
+
+.kanji-tile.selected,
+.counting-tile.selected {
+  background: var(--accent-soft);
+  border-color: var(--accent-soft-border);
+  color: var(--fg);
+}
+
+.grid-actions {
+  display: flex;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.link-btn {
+  appearance: none;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  padding: 0;
+}
+
+.answer-mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.answer-mode-toggle button {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.answer-mode-toggle button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.mcq-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.mcq-option {
+  appearance: none;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 14px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mcq-option:hover {
+  border-color: var(--accent);
+}
+
+button.primary {
+  display: block;
+  margin: 18px auto 0;
+  padding: 12px 34px;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.primary:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+#study-intro { text-align: center; padding: 12px 0; }
+#study-intro .panel-head { justify-content: center; }
+
+#quiz { position: relative; text-align: center; }
+
+.play-audio-btn {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  z-index: 2; /* sit above the flip-card's own positioned layers, which paint later in the DOM */
+  appearance: none;
+  border: none;
+  background: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+
+.play-audio-btn:hover {
+  background: var(--accent-soft);
+}
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.progress-pill {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.progress-pill b { color: var(--fg); }
+
+#char-display {
+  min-height: 220px;
+  margin-bottom: 20px;
+  user-select: none;
+  perspective: 1000px;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+}
+
+#char-display.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+.reveal-answer {
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.reveal-alts {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.quiz-emoji {
+  width: 64px;
+  height: 64px;
+}
+
+.quiz-meaning {
+  font-size: 20px;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.quiz-word {
+  font-size: 88px;
+  line-height: 1;
+}
+
+#answer-input {
+  font-size: 22px;
+  text-align: center;
+  padding: 10px 16px;
+  width: 220px;
+  max-width: 90%;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  color: var(--fg);
+}
+
+/* MCQ mode: the real input stays in the DOM and focused (so Space/Enter keep
+   working exactly as in Type mode) but is invisible — the option buttons are
+   what's actually shown and clicked. */
+#answer-input.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+#answer-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+#answer-input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+
+#summary { text-align: center; padding: 12px 0; }
+
+#summary-text { font-size: 17px; margin-bottom: 18px; }
+
+[hidden] { display: none !important; }
+
+.grammar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.grammar-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--card-bg);
+}
+
+.grammar-pattern {
+  font-family: var(--font-kana);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.grammar-pattern-romaji {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.grammar-meaning {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.grammar-explanation {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+.grammar-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.grammar-example {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.grammar-example-jp {
+  font-family: var(--font-kana);
+  font-size: 16px;
+}
+
+.grammar-example-romaji {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.grammar-example-en {
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .char-tile { width: 44px; }
+  .word-tile { width: 78px; }
+  .kanji-tile,
+  .counting-tile { width: 78px; }
+  .quiz-word { font-size: 64px; }
+  .quiz-emoji { width: 48px; height: 48px; }
+  .quiz-meaning { font-size: 16px; }
+  .grammar-pattern { font-size: 17px; }
+}
+
+.attribution {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 10px 0 0;
+}
+
+.attribution a {
+  color: var(--muted);
+}

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kana Drill</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <nav id="main-tabs" class="main-tabs">
+      <div class="tabs-left">
+        <button data-tab="hiragana">HIRAGANA</button>
+        <button data-tab="katakana">KATAKANA</button>
+        <button data-tab="kanji">KANJI</button>
+        <button data-tab="counting">COUNTING</button>
+        <button data-tab="vocab">VOCAB</button>
+        <button data-tab="grammar">GRAMMAR</button>
+        <button data-tab="study">STUDY</button>
+      </div>
+      <div class="universal-actions" title="Applies to every section at once: hiragana, katakana, kanji, counting, vocab">
+        <button id="select-all-universal" class="link-btn muted">Select all</button>
+        <button id="clear-all-universal" class="link-btn muted">Clear all</button>
+      </div>
+    </nav>
+
+    <div class="card">
+      <section id="char-view">
+        <div class="panel-head">
+          <div id="panel-badge" class="badge hiragana">あ</div>
+          <div>
+            <h2 id="panel-title">Hiragana</h2>
+            <nav id="sub-tabs" class="sub-tabs">
+              <button data-sub="single">Single</button>
+              <button data-sub="double">Double</button>
+              <button data-sub="words">Words</button>
+            </nav>
+          </div>
+        </div>
+        <p id="grid-hint" class="hint">Choose some characters, then switch to the <b>STUDY</b> tab.</p>
+
+        <div id="char-grid" class="char-grid"></div>
+
+        <div class="grid-actions">
+          <button id="select-all" class="link-btn">SELECT ALL</button>
+          <button id="select-none" class="link-btn">CLEAR ALL</button>
+        </div>
+      </section>
+
+      <section id="kanji-view" hidden>
+        <div class="panel-head">
+          <div class="badge kanji">漢</div>
+          <div>
+            <h2>Kanji</h2>
+            <p class="hint" style="margin:0">JLPT N5 — 103 kanji</p>
+          </div>
+        </div>
+        <p class="hint">Choose some kanji, then switch to the <b>STUDY</b> tab.</p>
+
+        <div id="kanji-quick-select" class="quick-select"></div>
+
+        <div id="kanji-grid" class="char-grid"></div>
+
+        <div class="grid-actions">
+          <button id="kanji-select-all" class="link-btn">SELECT ALL</button>
+          <button id="kanji-select-none" class="link-btn">CLEAR ALL</button>
+        </div>
+      </section>
+
+      <section id="counting-view" hidden>
+        <div class="panel-head">
+          <div class="badge counting">数</div>
+          <div>
+            <h2>Counting</h2>
+            <nav id="counting-sub-tabs" class="sub-tabs">
+              <span class="subtab-group-label">Numbers</span>
+              <button data-csub="basic">Basic</button>
+              <button data-csub="tens">Tens</button>
+              <button data-csub="hundreds">Hundreds</button>
+              <button data-csub="thousands">Thousands</button>
+              <button data-csub="tenthousands">10,000+</button>
+              <button data-csub="random">Random</button>
+              <span class="subtab-group-label">Counters</span>
+              <button data-csub="objects">Objects</button>
+              <button data-csub="people">People</button>
+              <button data-csub="age">Age</button>
+            </nav>
+          </div>
+        </div>
+        <p class="hint">Choose some numbers, then switch to the <b>STUDY</b> tab.</p>
+
+        <div id="random-controls" class="random-controls" hidden>
+          <p class="hint">Freshly generated numbers — pick a length (up to 8 digits, or Any), then Regenerate.</p>
+          <div id="random-digit-select" class="quick-select"></div>
+          <button type="button" class="link-btn" id="random-regenerate">🔄 Regenerate</button>
+        </div>
+
+        <div id="counting-grid" class="char-grid"></div>
+
+        <div class="grid-actions">
+          <button id="counting-select-all" class="link-btn">SELECT ALL</button>
+          <button id="counting-select-none" class="link-btn">CLEAR ALL</button>
+        </div>
+      </section>
+
+      <section id="vocab-view" hidden>
+        <div class="panel-head">
+          <div class="badge vocab">語</div>
+          <div>
+            <h2>Vocab</h2>
+            <nav id="vocab-sub-tabs" class="sub-tabs">
+              <button data-vsub="unit1">Unit 1</button>
+              <button data-vsub="unit2">Unit 2</button>
+              <button data-vsub="unit3">Unit 3</button>
+              <button data-vsub="unit4">Unit 4</button>
+              <button data-vsub="unit5">Unit 5</button>
+              <button data-vsub="unit6">Unit 6</button>
+            </nav>
+          </div>
+        </div>
+        <p class="hint">Choose some words, then switch to the <b>STUDY</b> tab.</p>
+
+        <div id="vocab-grid" class="char-grid"></div>
+
+        <div class="grid-actions">
+          <button id="vocab-select-all" class="link-btn">SELECT ALL</button>
+          <button id="vocab-select-none" class="link-btn">CLEAR ALL</button>
+        </div>
+      </section>
+
+      <section id="grammar-view" hidden>
+        <div class="panel-head">
+          <div class="badge grammar">文</div>
+          <div>
+            <h2>Grammar</h2>
+            <nav id="grammar-sub-tabs" class="sub-tabs">
+              <button data-gsub="unit1">Unit 1</button>
+              <button data-gsub="unit2">Unit 2</button>
+              <button data-gsub="unit3">Unit 3</button>
+              <button data-gsub="unit4">Unit 4</button>
+              <button data-gsub="unit5">Unit 5</button>
+              <button data-gsub="unit6">Unit 6</button>
+            </nav>
+          </div>
+        </div>
+        <p class="hint">A reference, not a quiz — browse each unit's grammar points and example sentences.</p>
+
+        <div id="grammar-list" class="grammar-list"></div>
+      </section>
+
+      <section id="study-view" hidden>
+        <div id="study-intro">
+          <div class="panel-head">
+            <div class="badge study">S</div>
+            <div>
+              <h2>Study</h2>
+              <p id="study-count" class="hint">0 Kana Cards</p>
+            </div>
+          </div>
+          <p class="hint">Type the rōmaji equivalent — or your keyboard's Japanese IME works too. <b>Space</b> flips the card to reveal the answer, <b>Enter</b> skips it.</p>
+          <div class="answer-mode-toggle" id="answer-mode-toggle">
+            <button type="button" data-answer-mode="type" class="active">Type</button>
+            <button type="button" data-answer-mode="mcq">Multiple choice</button>
+          </div>
+          <button class="primary" id="start-btn">Start</button>
+        </div>
+
+        <div id="quiz" hidden>
+          <button type="button" id="play-audio-btn" class="play-audio-btn" aria-label="Play pronunciation (Shift+V)" title="Play pronunciation (Shift+V)">🔊</button>
+          <div id="char-display"></div>
+          <input id="answer-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type romaji…" />
+          <div id="mcq-options" class="mcq-options" hidden></div>
+          <div class="quiz-footer">
+            <button class="link-btn" id="stop-btn">Stop</button>
+            <span class="progress-pill">Progress: <b id="stat-progress">0 / 0</b></span>
+          </div>
+        </div>
+
+        <div id="summary" hidden>
+          <p id="summary-text"></p>
+          <button class="primary" id="back-btn">Back</button>
+        </div>
+      </section>
+    </div>
+
+    <p class="attribution">Word pictures: <a href="https://github.com/twitter/twemoji" target="_blank" rel="noopener">Twemoji</a> (CC-BY 4.0)</p>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
